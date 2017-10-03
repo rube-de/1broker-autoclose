@@ -1,0 +1,32 @@
+function btcBalance(){
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("BTCBalance");
+
+  var response = UrlFetchApp.fetch("https://1broker.com/api/v2/user/overview.php?token=");
+
+  var json = JSON.parse(response.getContentText());
+
+  var details=[];
+
+  var r = json.response;
+
+  var old_net_worth = sheet.getRange("E2").getValue();
+
+
+  var date = Utilities.formatDate(new Date(), "GMT", "yyyy-MM-dd'T'HH:mm:ss'Z'");
+  var balance = r.balance;
+  var orders_worth = r.orders_worth;
+  var positions_worth = r.positions_worth;
+  var net_worth = r.net_worth;
+  var net_worth_dif = net_worth - old_net_worth;
+  var net_worth_gain = ((net_worth/old_net_worth)-1)*100
+  net_worth_gain = parseFloat(net_worth_gain).toFixed(4);
+
+  details.push(date,balance,orders_worth,positions_worth,net_worth,net_worth_dif,net_worth_gain);
+
+  sheet.insertRowAfter(1)
+
+  for(i=1;i<=details.length;i++){
+    sheet.getRange(2, i).setValue(details[i-1]);
+  }
+}
