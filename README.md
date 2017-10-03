@@ -17,6 +17,7 @@ After that install the ccxt library via pip:
 `pip3.6 install ccxt`
 
 ## usage:
+open auto_sell.py with an editor/notepad and add your api-key, the timeinterval you want to run the script and the positive and negative triggers. After that you can run the script with
 `python3.6 auto_sell.py`
 
 
@@ -25,6 +26,8 @@ After that install the ccxt library via pip:
 ## extra:
 there is also a google script which will check gains.
 you will need to edit the script to add your api-key as token and have a google sheet named like in the script (my sheet is called BTCBalance)
+hint: use triggers in the google script: edit>current project triggers to run the e.g. every working day at 2pm
+
 the first row on the sheet is:
 date 	balance 	orders_worth 	positions_worth 	net_worth	Gain BTC	Gain %
 
