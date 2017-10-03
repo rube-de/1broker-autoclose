@@ -14,7 +14,8 @@ Check what python you have installed with:
 
 After that install the ccxt library via pip:
 
-`pip3.6 install ccxt`
+`pip install ccxt` (if you only have one python version installed)
+`pip3.6 install ccxt` (if you have multiple python version installed)
 
 ## usage:
 Open auto_sell.py with an editor/notepad and add your api-key, the timeinterval you want to run the script and the positive and negative triggers. After that you can run the script with
