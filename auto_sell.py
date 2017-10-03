@@ -46,9 +46,9 @@ while True:
         pos_stop_loss = float(pos['stop_loss'])
         pos_entry = float(pos['entry_price'])
         if pos_profit_percent > 0 and pos_profit_percent > triggerPositive:
-            logging.info("Selling position: " + pos_id + " with profit: " + str(pos_profit_percent) + "%")
+            logging.info("Closing position: " + pos_id + " with profit: " + str(pos_profit_percent) + "%")
             # exchange.privateGetPositionClose({'position_id': pos_id})
         elif pos_profit_percent < 0 and pos_profit_percent < triggerNegative:
-            logging.info("Selling position: " + pos_id + " with profit: " + str(pos_profit_percent) + "%")
+            logging.info("Closing position: " + pos_id + " with loss: " + str(pos_profit_percent) + "%")
             # exchange.privateGetPositionClose({'position_id': pos_id})
     time.sleep(time_interval)
