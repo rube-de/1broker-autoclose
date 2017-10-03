@@ -20,6 +20,8 @@ After that install the ccxt library via pip:
 Open auto_sell.py with an editor/notepad and add your api-key, the timeinterval you want to run the script and the positive and negative triggers. After that you can run the script with
 `python3.6 auto_sell.py`
 
+(the real execution is commented out, if you are satisfied with the actions in the log you have to remove the `#` in the while loop)
+
 
 
 
