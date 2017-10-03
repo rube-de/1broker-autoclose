@@ -38,4 +38,8 @@ date 	balance 	orders_worth 	positions_worth 	net_worth	Gain BTC	Gain %
 
 
 
+### if you want to pay me a beer you are free to send some tip here
+bitcoin: 3NRdkqjeq4DCLeK1B5phfDc996BwHgsAvo
+dash: Xhheppe83wqdy3fFkMidUXa1CUNp2mEou5
+
 
