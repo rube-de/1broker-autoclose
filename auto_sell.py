@@ -3,6 +3,7 @@ import logging
 
 import ccxt
 import time
+import datetime
 
 
 def get_exchange(exchange_id):
