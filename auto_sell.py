@@ -21,20 +21,20 @@ def get_exchange(exchange_id):
 
 def get_trigger_positive():
     if username == 'snortex':
-        return 100
+        return 200
     elif username == '333':
         return 50
     else:
-        return trigger_positive
+        return trigger_positive_def
 
 
 def get_trigger_negative():
         if username == 'snortex':
-            return -80
+            return -50
         elif username == '333':
             return -10
         else:
-            return trigger_negative
+            return trigger_negative_def
 
 
 # enter here your api key from 1broker
@@ -46,9 +46,9 @@ time_interval = 60*5
 
 # triggers when to close an order
 # close at +XX%
-trigger_positive = 50
+trigger_positive_def = 50
 # close at -XX%
-trigger_negative = -10
+trigger_negative_def = -10
 
 # logging file
 logging.basicConfig(filename="1broker_sell.log", format="%(asctime)s %(levelname)s : %(message)s", level=logging.INFO)
@@ -56,7 +56,20 @@ logging.basicConfig(filename="1broker_sell.log", format="%(asctime)s %(levelname
 exchange = get_exchange(exchange_id)
 
 while True:
-    open_positions = exchange.privateGetPositionOpen()['response']
+    try:        
+        open_positions = exchange.privateGetPositionOpen()['response']    
+    except:        
+        (type, value, traceback) = sys.exc_info()        
+        print("Exception:")        
+        print(type)        
+        print(value)      
+       
+    curTime = time.time()    
+    mydate = datetime.datetime.fromtimestamp(curTime)    
+    mydate = mydate.strftime('%Y%m%d_%H:%M:%S')    
+    print("--- {0:s} ----------------------------------------".format(mydate))    
+    print("{1:d} open positions found".format(mydate, len(open_positions)))
+    
     for pos in open_positions:
         pos_id = pos['position_id']
         pos_profit = float(pos['profit_loss'])
@@ -66,19 +79,28 @@ while True:
 
         # for copied trades
         pos_copy = pos['copy_of']
-        shared_position = exchange.privateGetPositionSharedGet({'position_id': pos_copy})['response']
-        username = shared_position['username']
+        username = '-- own --'        
+        if int(pos_copy) > 0:            
+            try:                
+                shared_position = exchange.privateGetPositionSharedGet({'position_id': pos_copy})['response']                
+                username = shared_position['username']            
+            except:                
+                (type, value, traceback) = sys.exc_info()                
+                print("Exception:")                
+                print(type)                
+                print(value)
 
-        '''
-        # use this for different trader settings
-        trigger_positive = get_trigger_positive()
-        trigger_negative = get_trigger_negative()
-        '''
+        # use this for different trader settings        
+        trigger_positive = get_trigger_positive(username)
+        trigger_negative = get_trigger_negative(username)
 
         if pos_profit_percent > 0 and pos_profit_percent > trigger_positive:
+            print("  profit trigger {0:d}% reached, trade closed".format(trigger_positive))
             logging.info("Close position: " + pos_id + " (" + username + ") with profit: " + str(pos_profit_percent) + "%")
             # exchange.privateGetPositionClose({'position_id': pos_id})
         elif pos_profit_percent < 0 and pos_profit_percent < trigger_negative:
+            print("  loss trigger {0:d}% reached, trade closed".format(trigger_negative))
             logging.info("Close position: " + pos_id + " (" + username + ") with loss: " + str(pos_profit_percent) + "%")
             # exchange.privateGetPositionClose({'position_id': pos_id})
+    print()
     time.sleep(time_interval)
