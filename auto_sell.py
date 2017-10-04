@@ -20,7 +20,7 @@ def get_exchange(exchange_id):
     return exchange
 
 
-def get_trigger_positive():
+def get_trigger_positive(username):
     if username == 'snortex':
         return 200
     elif username == '333':
@@ -29,7 +29,7 @@ def get_trigger_positive():
         return trigger_positive_def
 
 
-def get_trigger_negative():
+def get_trigger_negative(username):
         if username == 'snortex':
             return -50
         elif username == '333':
